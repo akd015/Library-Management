@@ -9,7 +9,7 @@ import { Book } from '../models/book.model';
 export class BookService {
   private readonly http = inject(HttpClient);
   private readonly books$ = new BehaviorSubject<Book[] | null>(null);
-  private readonly url = '/assets/mock/books.json';
+  private readonly url = 'assets/mock/books.json';
 
   getAll(): Observable<Book[]> {
     return this.ensureLoaded().pipe(map((books) => books.slice()));

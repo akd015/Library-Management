@@ -9,7 +9,7 @@ import { Member } from '../models/member.model';
 export class MemberService {
   private readonly http = inject(HttpClient);
   private readonly members$ = new BehaviorSubject<Member[] | null>(null);
-  private readonly url = '/assets/mock/members.json';
+  private readonly url = 'assets/mock/members.json';
 
   getAll(): Observable<Member[]> {
     return this.ensureLoaded().pipe(map((members) => members.slice()));

@@ -9,7 +9,7 @@ import { Transaction, TransactionStatus } from '../models/transaction.model';
 export class TransactionService {
   private readonly http = inject(HttpClient);
   private readonly tx$ = new BehaviorSubject<Transaction[] | null>(null);
-  private readonly url = '/assets/mock/transactions.json';
+  private readonly url = 'assets/mock/transactions.json';
 
   getAll(): Observable<Transaction[]> {
     return this.ensureLoaded().pipe(map((tx) => tx.slice()));
