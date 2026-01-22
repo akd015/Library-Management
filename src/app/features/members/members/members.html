@@ -1,0 +1,45 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Member Access</mat-card-title>
+    <mat-card-subtitle>Login to borrow/return books (demo)</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div *ngIf="auth.memberId() !== null; else loginForm">
+      <div *ngIf="loggedInMember$ | async as m">
+        <p><strong>Logged in:</strong> #{{ m.id }} — {{ m.name }} ({{ m.email }})</p>
+        <p><strong>Status:</strong> Active: {{ m.isActive }} • Joined: {{ m.membershipDate }}</p>
+      </div>
+      <button mat-raised-button color="primary" (click)="auth.logout()">Logout</button>
+    </div>
+
+    <ng-template #loginForm>
+      <form [formGroup]="form" class="form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Select Member</mat-label>
+          <mat-select formControlName="memberId">
+            <mat-option *ngFor="let m of (members$ | async) ?? []" [value]="m.id">
+              #{{ m.id }} — {{ m.name }} ({{ m.email }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.memberId.hasError('required')">Member ID is required</mat-error>
+          <mat-error *ngIf="form.controls.memberId.hasError('min')">Member ID must be valid</mat-error>
+          <mat-error *ngIf="form.hasError('invalidMember')">Member not found or inactive</mat-error>
+        </mat-form-field>
+
+        <div class="actions" *ngIf="redirect$ | async as redirectTo">
+          <button mat-raised-button color="primary" (click)="login(redirectTo)">Login</button>
+        </div>
+      </form>
+
+      <h3>Demo Members</h3>
+      <ul *ngIf="members$ | async as members">
+        @for (m of members; track m.id) {
+          <li>
+            <strong>#{{ m.id }}</strong> — {{ m.name }} ({{ m.email }}) • Active: {{ m.isActive }} • Joined: {{ m.membershipDate }}
+          </li>
+        }
+      </ul>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

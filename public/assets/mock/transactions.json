@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1001,
+    "bookId": 1,
+    "memberId": 1,
+    "borrowedAt": "2026-01-05",
+    "dueAt": "2026-01-19",
+    "status": "BORROWED"
+  }
+]

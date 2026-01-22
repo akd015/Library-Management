@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "isbn": "978-0132350884",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": "Software Engineering",
+    "description": "A handbook of agile software craftsmanship.",
+    "publishedYear": 2008,
+    "totalCopies": 5,
+    "availableCopies": 3,
+    "isPopular": true
+  },
+  {
+    "id": 2,
+    "isbn": "978-1492056355",
+    "title": "Learning TypeScript",
+    "author": "Josh Goldberg",
+    "genre": "Programming",
+    "description": "A practical guide to TypeScript for JavaScript developers.",
+    "publishedYear": 2022,
+    "totalCopies": 4,
+    "availableCopies": 4,
+    "isPopular": false
+  },
+  {
+    "id": 3,
+    "isbn": "978-1491952023",
+    "title": "Designing Data-Intensive Applications",
+    "author": "Martin Kleppmann",
+    "genre": "Distributed Systems",
+    "description": "The big ideas behind reliable, scalable, and maintainable systems.",
+    "publishedYear": 2017,
+    "totalCopies": 3,
+    "availableCopies": 2,
+    "isPopular": true
+  },
+  {
+    "id": 4,
+    "isbn": "978-0134757599",
+    "title": "Refactoring (2nd Edition)",
+    "author": "Martin Fowler",
+    "genre": "Software Engineering",
+    "description": "Improving the design of existing code.",
+    "publishedYear": 2018,
+    "totalCopies": 2,
+    "availableCopies": 1,
+    "isPopular": true
+  },
+  {
+    "id": 5,
+    "isbn": "978-1449331818",
+    "title": "Learning JavaScript Design Patterns",
+    "author": "Addy Osmani",
+    "genre": "Programming",
+    "description": "A guide to writing beautiful, structured, and maintainable JavaScript.",
+    "publishedYear": 2012,
+    "totalCopies": 6,
+    "availableCopies": 6,
+    "isPopular": true
+  },
+  {
+    "id": 6,
+    "isbn": "978-1617293986",
+    "title": "Angular in Action",
+    "author": "Jeremy Wilken",
+    "genre": "Web Development",
+    "description": "Build responsive and scalable Angular applications.",
+    "publishedYear": 2018,
+    "totalCopies": 3,
+    "availableCopies": 2,
+    "isPopular": false
+  },
+  {
+    "id": 7,
+    "isbn": "978-0134494166",
+    "title": "Clean Architecture",
+    "author": "Robert C. Martin",
+    "genre": "Software Engineering",
+    "description": "A craftsman's guide to software structure and design.",
+    "publishedYear": 2017,
+    "totalCopies": 4,
+    "availableCopies": 1,
+    "isPopular": true
+  },
+  {
+    "id": 8,
+    "isbn": "978-0596007126",
+    "title": "Head First Design Patterns",
+    "author": "Eric Freeman",
+    "genre": "Software Engineering",
+    "description": "A brain-friendly guide to design patterns.",
+    "publishedYear": 2004,
+    "totalCopies": 5,
+    "availableCopies": 5,
+    "isPopular": true
+  },
+  {
+    "id": 9,
+    "isbn": "978-0131103627",
+    "title": "The C Programming Language",
+    "author": "Brian W. Kernighan, Dennis M. Ritchie",
+    "genre": "Programming",
+    "description": "Classic introduction to the C language.",
+    "publishedYear": 1988,
+    "totalCopies": 2,
+    "availableCopies": 2,
+    "isPopular": false
+  },
+  {
+    "id": 10,
+    "isbn": "978-0262033848",
+    "title": "Introduction to Algorithms",
+    "author": "Thomas H. Cormen",
+    "genre": "Computer Science",
+    "description": "Comprehensive algorithms reference (CLRS).",
+    "publishedYear": 2009,
+    "totalCopies": 2,
+    "availableCopies": 1,
+    "isPopular": true
+  }
+]

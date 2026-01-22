@@ -1,0 +1,20 @@
+<mat-toolbar color="primary" class="navbar">
+  <span class="brand">
+    <mat-icon aria-hidden="true">local_library</mat-icon>
+    <span>Library Management</span>
+  </span>
+
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/books" routerLinkActive="active">Books</a>
+  <a mat-button routerLink="/borrow" routerLinkActive="active">Borrow</a>
+  <a mat-button routerLink="/return" routerLinkActive="active">Return</a>
+  <a mat-button routerLink="/members" routerLinkActive="active">Members</a>
+
+  <span class="spacer"></span>
+  @if (auth.memberId() !== null) {
+    <button mat-button (click)="auth.logout()">Logout</button>
+  } @else {
+    <a mat-button routerLink="/members" routerLinkActive="active">Login</a>
+  }
+</mat-toolbar>

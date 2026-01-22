@@ -1,0 +1,40 @@
+.full-width {
+  width: 100%;
+}
+
+.toolbar-card {
+  margin-bottom: 12px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.subtitle {
+  margin: 0;
+}
+
+.search-field {
+  min-width: 260px;
+  flex: 1 1 320px;
+}
+
+.card-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 12px;
+}
+
+.book-card {
+  height: 100%;
+}
+
+.empty {
+  margin-top: 8px;
+  color: gray;
+}

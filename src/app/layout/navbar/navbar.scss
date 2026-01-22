@@ -1,0 +1,29 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 650px) {
+  .navbar a[mat-button],
+  .navbar button[mat-button] {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+a.active {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}

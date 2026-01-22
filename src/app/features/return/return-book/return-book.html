@@ -1,0 +1,44 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Return a Book</mat-card-title>
+    <mat-card-subtitle>Member-only</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (memberId() === null) {
+      <p>You must login first.</p>
+      <a mat-raised-button color="primary" routerLink="/members">Go to Members</a>
+    } @else {
+      <div *ngIf="vm$ | async as vm">
+        <p *ngIf="vm.openTx.length === 0">No borrowed books found for your account.</p>
+
+        <form *ngIf="vm.openTx.length > 0" [formGroup]="form" class="form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Select borrowed book</mat-label>
+            <mat-select formControlName="transactionId">
+              <mat-option *ngFor="let item of vm.openTx" [value]="item.tx.id">
+                {{ item.book?.title ?? ('Book #' + item.tx.bookId) }}
+                — Borrowed: {{ item.tx.borrowedAt }} • Due: {{ item.tx.dueAt }} • Status: {{ item.tx.status }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls.transactionId.hasError('required')">Selection is required</mat-error>
+          </mat-form-field>
+
+          <mat-card *ngIf="selectedTx$ | async as sel" class="preview">
+            <mat-card-content>
+              <p><strong>Book:</strong> {{ sel.book?.title ?? ('Book #' + sel.tx.bookId) }}</p>
+              <p *ngIf="sel.book"><strong>Author:</strong> {{ sel.book.author }} • <strong>ISBN:</strong> {{ sel.book.isbn }}</p>
+              <p><strong>Borrowed:</strong> {{ sel.tx.borrowedAt }} • <strong>Due:</strong> {{ sel.tx.dueAt }}</p>
+              <p><strong>Status:</strong> {{ sel.tx.status }}</p>
+            </mat-card-content>
+          </mat-card>
+
+          <div class="actions">
+            <button mat-raised-button color="primary" type="button" (click)="submit()">Return</button>
+            <a mat-button routerLink="/books">Cancel</a>
+          </div>
+        </form>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

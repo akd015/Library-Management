@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Borrow a Book</mat-card-title>
+    <mat-card-subtitle>Member-only</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (memberId() === null) {
+      <p>You must login first.</p>
+      <a mat-raised-button color="primary" routerLink="/members">Go to Members</a>
+    } @else {
+      <div *ngIf="member$ | async as m" class="info">
+        <p><strong>Member:</strong> #{{ m.id }} — {{ m.name }} ({{ m.email }})</p>
+        <p><strong>Status:</strong> Active: {{ m.isActive }} • Joined: {{ m.membershipDate }}</p>
+      </div>
+
+      <form [formGroup]="form" class="form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Select book</mat-label>
+          <mat-select formControlName="bookId">
+            <mat-option *ngFor="let b of (books$ | async) ?? []" [value]="b.id">
+              {{ b.title }} — {{ b.author }} • ISBN: {{ b.isbn }} • {{ b.availableCopies }}/{{ b.totalCopies }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.bookId.hasError('required')">Book is required</mat-error>
+        </mat-form-field>
+
+        <mat-card *ngIf="selectedBook$ | async as b" class="preview">
+          <mat-card-content>
+            <p><strong>Title:</strong> {{ b.title }}</p>
+            <p><strong>Author:</strong> {{ b.author }}</p>
+            <p><strong>Genre:</strong> {{ b.genre }}</p>
+            <p *ngIf="b.publishedYear"><strong>Year:</strong> {{ b.publishedYear }}</p>
+            <p><strong>Availability:</strong> {{ b.availableCopies }} / {{ b.totalCopies }}</p>
+            <p *ngIf="b.description"><strong>About:</strong> {{ b.description }}</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Due date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dueAt" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.controls.dueAt.hasError('required')">Due date is required</mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="button" (click)="submit()">Borrow</button>
+          <a mat-button routerLink="/books">Cancel</a>
+        </div>
+      </form>
+    }
+  </mat-card-content>
+</mat-card>
