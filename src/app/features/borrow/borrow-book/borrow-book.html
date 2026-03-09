@@ -38,10 +38,11 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Due date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="dueAt" />
+          <input matInput [matDatepicker]="picker" [min]="minDueDate" formControlName="dueAt" />
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="form.controls.dueAt.hasError('required')">Due date is required</mat-error>
+          <mat-error *ngIf="form.controls.dueAt.hasError('pastDate')">Due date cannot be in the past</mat-error>
         </mat-form-field>
 
         <div class="actions">

@@ -23,6 +23,17 @@
   flex: 1 1 320px;
 }
 
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  min-width: 220px;
+  flex: 1 1 220px;
+}
+
 .card-grid {
   display: grid;
   gap: 12px;
@@ -37,4 +48,14 @@
 .empty {
   margin-top: 8px;
   color: gray;
+}
+
+.add-form {
+  margin-top: 8px;
+}
+
+.actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
 }

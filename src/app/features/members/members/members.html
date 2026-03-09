@@ -43,3 +43,65 @@
     </ng-template>
   </mat-card-content>
 </mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Register Member</mat-card-title>
+    <mat-card-subtitle>Template-driven form</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form #registerForm="ngForm" class="form" (ngSubmit)="register(registerForm)">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput name="name" [(ngModel)]="registerModel.name" #name="ngModel" required />
+        <mat-error *ngIf="name.invalid && (name.touched || registerForm.submitted)">Name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="registerModel.email"
+          #email="ngModel"
+          required
+          email
+        />
+        <mat-error *ngIf="email.hasError('required') && (email.touched || registerForm.submitted)">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="email.hasError('email') && (email.touched || registerForm.submitted)">
+          Enter a valid email
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Phone</mat-label>
+        <input matInput name="phone" [(ngModel)]="registerModel.phone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Membership date</mat-label>
+        <input
+          matInput
+          type="date"
+          name="membershipDate"
+          [(ngModel)]="registerModel.membershipDate"
+          #membershipDate="ngModel"
+          required
+        />
+        <mat-error *ngIf="membershipDate.hasError('required') && (membershipDate.touched || registerForm.submitted)">
+          Membership date is required
+        </mat-error>
+        <mat-error *ngIf="membershipDate.hasError('futureDate')">
+          Membership date cannot be in the future
+        </mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit">Register</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -11,13 +11,46 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card class="toolbar-card">
+  <mat-card-header>
+    <mat-card-title>Filter Catalog</mat-card-title>
+    <mat-card-subtitle>Use custom genre/author/availability filters</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="filters" *ngIf="(uniqueGenres$ | async) as genres">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Genre</mat-label>
+      <mat-select [formControl]="selectedGenre">
+        <mat-option value="">All genres</mat-option>
+        <mat-option *ngFor="let genre of genres" [value]="genre">{{ genre }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field" *ngIf="(uniqueAuthors$ | async) as authors">
+      <mat-label>Author</mat-label>
+      <mat-select [formControl]="selectedAuthor">
+        <mat-option value="">All authors</mat-option>
+        <mat-option *ngFor="let author of authors" [value]="author">{{ author }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Availability</mat-label>
+      <mat-select [formControl]="selectedAvailability">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="available">Available only</mat-option>
+        <mat-option value="unavailable">Unavailable only</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
 <mat-card>
   <mat-card-header>
     <mat-card-title>Table View</mat-card-title>
     <mat-card-subtitle>Quick glance at availability</mat-card-subtitle>
   </mat-card-header>
 
-  <mat-card-content *ngIf="filteredBooks$ | async as books">
+  <mat-card-content *ngIf="pagedBooks$ | async as books">
     <table mat-table [dataSource]="books" class="mat-elevation-z1 full-width">
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef>Title</th>
@@ -44,14 +77,21 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let b">
-          <a mat-button color="primary" [routerLink]="['/books', b.id]">View</a>
+          <a mat-button color="primary" [routerLink]="['/book', b.id]">View</a>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <p *ngIf="books.length === 0" class="empty">No books match your search.</p>
+    <mat-paginator
+      [length]="(totalFilteredBooks$ | async) ?? 0"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPage($event)"
+      showFirstLastButtons
+    ></mat-paginator>
+    <p *ngIf="books.length === 0" class="empty">No books match your current filters.</p>
   </mat-card-content>
 </mat-card>
 
@@ -62,7 +102,7 @@
   </mat-card-header>
   <mat-card-content *ngIf="filteredBooks$ | async as books">
     <div class="card-grid">
-      <mat-card *ngFor="let b of books" class="book-card">
+      <mat-card *ngFor="let b of books" class="book-card" [appHighlightPopular]="!!b.isPopular">
         <mat-card-title>{{ b.title }}</mat-card-title>
         <mat-card-subtitle>{{ b.author }} • {{ b.genre }}</mat-card-subtitle>
         <mat-card-content>
@@ -75,11 +115,89 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <a mat-button color="primary" [routerLink]="['/books', b.id]">View</a>
+          <a mat-button color="primary" [routerLink]="['/book', b.id]">View</a>
           <a mat-button color="accent" routerLink="/borrow">Borrow</a>
         </mat-card-actions>
       </mat-card>
     </div>
     <p *ngIf="books.length === 0" class="empty">No books match your search.</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Add New Book</mat-card-title>
+    <mat-card-subtitle>Template-driven form</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form #addBookForm="ngForm" class="add-form" (ngSubmit)="submitAddBook(addBookForm)">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput name="title" [(ngModel)]="addBookModel.title" #title="ngModel" required />
+        <mat-error *ngIf="title.invalid && (title.touched || addBookForm.submitted)">Title is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Author</mat-label>
+        <input matInput name="author" [(ngModel)]="addBookModel.author" #author="ngModel" required />
+        <mat-error *ngIf="author.invalid && (author.touched || addBookForm.submitted)">Author is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Genre</mat-label>
+        <input matInput name="genre" [(ngModel)]="addBookModel.genre" #genre="ngModel" required />
+        <mat-error *ngIf="genre.invalid && (genre.touched || addBookForm.submitted)">Genre is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>ISBN</mat-label>
+        <input matInput name="isbn" [(ngModel)]="addBookModel.isbn" #isbn="ngModel" required />
+        <mat-error *ngIf="isbn.invalid && (isbn.touched || addBookForm.submitted)">ISBN is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Published year</mat-label>
+        <input
+          matInput
+          type="number"
+          name="publishedYear"
+          [(ngModel)]="addBookModel.publishedYear"
+          #publishedYear="ngModel"
+          min="1450"
+          max="2100"
+        />
+        <mat-error *ngIf="publishedYear.invalid && (publishedYear.touched || addBookForm.submitted)">
+          Enter a valid year
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Total copies</mat-label>
+        <input
+          matInput
+          type="number"
+          name="totalCopies"
+          [(ngModel)]="addBookModel.totalCopies"
+          #totalCopies="ngModel"
+          required
+          min="1"
+        />
+        <mat-error *ngIf="totalCopies.hasError('required') && (totalCopies.touched || addBookForm.submitted)">
+          Total copies is required
+        </mat-error>
+        <mat-error *ngIf="totalCopies.hasError('min') && (totalCopies.touched || addBookForm.submitted)">
+          Total copies must be at least 1
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput rows="3" name="description" [(ngModel)]="addBookModel.description"></textarea>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit">Add Book</button>
+      </div>
+    </form>
   </mat-card-content>
 </mat-card>

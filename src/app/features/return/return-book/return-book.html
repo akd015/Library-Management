@@ -24,7 +24,16 @@
             <mat-error *ngIf="form.controls.transactionId.hasError('required')">Selection is required</mat-error>
           </mat-form-field>
 
-          <mat-card *ngIf="selectedTx$ | async as sel" class="preview">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Return date</mat-label>
+            <input matInput type="date" [max]="maxReturnDate" formControlName="returnDate" />
+            <mat-error *ngIf="form.controls.returnDate.hasError('required')">Return date is required</mat-error>
+            <mat-error *ngIf="form.controls.returnDate.hasError('futureDate')">
+              Return date cannot be in the future
+            </mat-error>
+          </mat-form-field>
+
+          <mat-card *ngIf="selectedTx$ | async as sel" class="preview" [appHighlightOverdue]="sel.isOverdue">
             <mat-card-content>
               <p><strong>Book:</strong> {{ sel.book?.title ?? ('Book #' + sel.tx.bookId) }}</p>
               <p *ngIf="sel.book"><strong>Author:</strong> {{ sel.book.author }} • <strong>ISBN:</strong> {{ sel.book.isbn }}</p>

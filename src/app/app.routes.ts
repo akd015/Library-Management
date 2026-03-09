@@ -9,6 +9,7 @@ import { memberGuard } from './core/auth/member-guard';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'books' },
   { path: 'books', component: BookList },
+  { path: 'book/:id', component: BookDetail },
   { path: 'books/:id', component: BookDetail },
   { path: 'borrow', component: BorrowBook, canActivate: [memberGuard] },
   { path: 'return', component: ReturnBook, canActivate: [memberGuard] },
